@@ -7,16 +7,18 @@ from api.v1.views import app_views
 from flask import jsonify
 from models import storage
 
+
 @app_views.route('/stats', strict_slashes=False)
 def stats():
     """ show stats of records
     """
-    classes = {"Amenity", "BaseModel", "City",
-           "Place", "Review", "State", "User"}
+    classes = {"Amenity": "amenities", "City": "cities",
+               "Place": "places", "Review": "reviews",
+               "State": "states", "User": "users"}
 
     data = {}
-    for val in classes:
-        data[val.lower()] = storage.count(val)
+    for key, val in classes.items():
+        data[val] = storage.count(key)
 
     return jsonify(data)
 
