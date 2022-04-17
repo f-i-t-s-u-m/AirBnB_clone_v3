@@ -16,7 +16,7 @@ def stats():
 
     data = {}
     for val in classes:
-        data[val] = storage.count(val)
+        data[val.lower()] = storage.count(val)
 
     return jsonify(data)
 
