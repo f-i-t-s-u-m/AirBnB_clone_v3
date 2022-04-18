@@ -15,7 +15,8 @@ app.config['JSONIFY_PRETTYPRINT_REGULAR'] = True
 app.url_map.strict_slashes = False
 app.register_blueprint(app_views)
 
-cors = CORS(app, resources={r"/api/v1/*": {"origins": "*"}})
+cors = CORS(app, resources={r"/*": {"origins": "0.0.0.0"}})
+
 
 @app.errorhandler(404)
 def not_found(error):
