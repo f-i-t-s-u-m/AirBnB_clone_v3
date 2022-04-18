@@ -1,31 +1,3 @@
-Skip to content
-Search or jump to?
-Pull requests
-Issues
-Marketplace
-Explore
- 
-@f-i-t-s-u-m 
-tcrz
-/
-AirBnB_clone_v3
-Public
-forked from alexaorrico/AirBnB_clone_v2
-Code
-Pull requests
-Actions
-Projects
-Wiki
-Security
-Insights
-AirBnB_clone_v3/api/v1/views/states.py /
-@tcrz
-tcrz updated code for states view
-Latest commit c258a1f 2 days ago
- History
- 1 contributor
-67 lines (57 sloc)  1.94 KB
-   
 #!/usr/bin/python3
 """
 view for State objects that handles all default RESTFul API actions
