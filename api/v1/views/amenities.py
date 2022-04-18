@@ -31,7 +31,7 @@ def amenity(amenity_id):
 def delete_amenity(amenity_id):
     """ delete insance of item
     """
-    get_amenity = storage.get(Amenities, amenity_id)
+    get_amenity = storage.get(Amenity, amenity_id)
     if get_amenity:
         get_amenity.delete()
         del get_amenity
