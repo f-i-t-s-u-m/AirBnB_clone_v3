@@ -67,7 +67,7 @@ def update_state(state_id):
 
     req = request.get_json()
     if req is None:
-        return ("Not a JSON\n"), 400
+        return ("Not a JSON\n", 400)
 
     req.pop('id', None)
     req.pop('created_at', None)
