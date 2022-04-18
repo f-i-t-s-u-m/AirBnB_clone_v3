@@ -46,7 +46,7 @@ def create_state():
     """ create new state
     """
     req = request.get_json()
-    if req isNone:
+    if req is None:
         abort(Response("Not a JSON"), 400)
 
     if req.get('name') is None:
