@@ -45,6 +45,9 @@ def delete_state(state_id):
 def create_state():
     """ create new state
     """
+    if not request.get_json(force=True, silent=True):
+        return ("Not a JSON\n", 400)
+
     req = request.get_json()
     if req is None:
         return ("Not a JSON\n", 400)
