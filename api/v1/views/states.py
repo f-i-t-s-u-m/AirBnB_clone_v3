@@ -1,79 +1,95 @@
+Skip to content
+Search or jump to?
+Pull requests
+Issues
+Marketplace
+Explore
+ 
+@f-i-t-s-u-m 
+tcrz
+/
+AirBnB_clone_v3
+Public
+forked from alexaorrico/AirBnB_clone_v2
+Code
+Pull requests
+Actions
+Projects
+Wiki
+Security
+Insights
+AirBnB_clone_v3/api/v1/views/states.py /
+@tcrz
+tcrz updated code for states view
+Latest commit c258a1f 2 days ago
+ History
+ 1 contributor
+67 lines (57 sloc)  1.94 KB
+   
 #!/usr/bin/python3
-""" state file
 """
-
-from flask import jsonify, abort, request, Response
+view for State objects that handles all default RESTFul API actions
+"""
 from api.v1.views import app_views
+from flask import jsonify, abort, request, make_response
 from models import storage
 from models.state import State
 
 
 @app_views.route('/states')
-def states():
-    """ list all state
-    """
-    data = [x.to_dict() for x in storage.all(State).values()]
-    return jsonify(data)
+def get_states():
+    """Retrieves the list of all State objects """
+    states = [state.to_dict() for state in storage.all(State).values()]
+    return jsonify(states)
 
 
 @app_views.route('/states/<state_id>')
-def state(state_id):
-    """ get state by id
-    """
-    data = storage.get(State, state_id)
-    if data:
-        return jsonify(data.to_dict())
-    else:
+def get_state(state_id):
+    """Retrieves a State object based onstate_id, raises a 404 error
+    if state_id is not linked to any State object"""
+    state = storage.get(State, state_id)
+    if not state:
         abort(404)
+    return jsonify(state.to_dict())
 
 
 @app_views.route('/states/<state_id>', methods=['DELETE'])
 def delete_state(state_id):
-    """ delete insance of item
-    """
-    get_state = storage.get(State, state_id)
-    if get_state:
-        get_state.delete()
-        get_state.save()
-        return jsonify({}), 200
-
-    else:
+    """Deletes a State Object"""
+    state = storage.get(State, state_id)
+    if not state:
         abort(404)
+    state.delete()
+    storage.save()
+    return jsonify({}), 200
 
 
 @app_views.route('/states', methods=['POST'])
-def create_state():
-    """ create new state
-    """
-    req = request.get_json()
-    if req is None:
+def add_state():
+    """creates a State"""
+    if not request.get_json(force=True, silent=True):
         return ("Not a JSON\n", 400)
-
-    if req.get('name') is None:
+    if 'name' not in request.get_json():
         return ("Missing name\n", 400)
-
-    data = State(**req)
-    data.save()
-    return jsonify(data.to_dict()), 201
+    request_data = request.get_json()
+    new_state = State(**request_data)
+    new_state.save()
+    return jsonify(new_state.to_dict()), 201
 
 
 @app_views.route('/states/<state_id>', methods=['PUT'])
 def update_state(state_id):
-    """ update instance
-    """
-    data = storage.get(State, state_id)
-    if data is None:
+    """updates a state"""
+    state = storage.get(State, state_id)
+    if not state:
         abort(404)
-
-    req = request.get_json()
-    if req is None:
-        abort(Response("Not a JSON"), 400)
-
-    req.pop('id', None)
-    req.pop('created_at', None)
-    req.pop('updated_at', None)
-
-    for k, v in req.items():
-        setattr(data, k, v)
-    data.save()
-    return jsonify(data.to_dict()), 200
+    if not request.get_json(force=True, silent=True):
+        return ("Not a JSON\n", 400)
+    request_data = request.get_json()
+    request_data.pop('id', None)
+    request_data.pop('created_at', None)
+    request_data.pop('updated_at', None)
+    for key, value in request_data.items():
+        setattr(state, key, value)
+    state.save()
+    return jsonify(state.to_dict()), 200
