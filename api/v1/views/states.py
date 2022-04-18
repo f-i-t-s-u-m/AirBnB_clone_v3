@@ -2,7 +2,7 @@
 """ state file
 """
 
-from flask import jsonify, abort, request, Response
+from flask import jsonify, abort, request, make_response
 from api.v1.views import app_views
 from models import storage
 from models.state import State
@@ -67,7 +67,7 @@ def update_state(state_id):
 
     req = request.get_json()
     if req is None:
-        abort(Response("Not a JSON"), 400)
+        return ("Not a JSON\n"), 400
 
     req.pop('id', None)
     req.pop('created_at', None)
