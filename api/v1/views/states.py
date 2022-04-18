@@ -22,7 +22,7 @@ def state(state_id):
     """
     data = storage.get(State, state_id)
     if data:
-        return data.to_dict()
+        return jsonify(data.to_dict())
     else:
         abort(404)
 
@@ -34,7 +34,7 @@ def delete_state(state_id):
     get_state = storage.get(State, state_id)
     if get_state:
         get_state.delete()
-        del get_state
+        get_state.save()
         return jsonify({}), 200
 
     else:
@@ -47,10 +47,10 @@ def create_state():
     """
     req = request.get_json()
     if req is None:
-        abort(Response("Not a JSON"), 400)
+        return ("Not a JSON\n", 400)
 
     if req.get('name') is None:
-        abort(Response("Missing name"), 400)
+        return ("Missing name\n", 400)
 
     data = State(**req)
     data.save()
