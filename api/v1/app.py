@@ -4,6 +4,7 @@ create python file
 """
 
 from flask import Flask, jsonify, make_response
+from flask_cors import CORS, cross_origin
 from models import storage
 from api.v1.views import app_views
 from os import getenv
